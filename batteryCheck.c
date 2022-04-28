@@ -21,17 +21,11 @@ int batteryChargerateCheck(float chargeRate){
        {
        HigherStatus=checkHighLimit(chargeRate,lowlimit,higlimit,&errorcode_1);
        }
- if(Lowerstatus == ALERT|| HigherStatus == ALERT)
+       FailureAlert= FailureAlertCheck(Lowerstatus,HigherStatus);
+       int limitBreach=PrintDecision(Lowerstatus,HigherStatus);
+ if(limitBreach)
  {
-       FailureAlert = 1;
+  print(Language_SET,PARA_SOC, FailureAlert,errorcode_1);
  }
- else
- {
-         FailureAlert=0;
- }
-   if(Lowerstatus|| HigherStatus)
- {
-  print(Language_SET,PARA_CHARGE, FailureAlert,errorcode_1);
- }
- return (!(Lowerstatus|| HigherStatus));
+  return (!(limitBreach));
 }

@@ -9,17 +9,11 @@ int batterySocCheck(float soc)
        {
        HigherStatus=checkHighLimit(soc,lowlimit,higlimit,&errorcode_1);
        }
- if(Lowerstatus == ALERT|| HigherStatus == ALERT)
- {
-       FailureAlert = 1;
- }
- else
- {
-         FailureAlert=0;
- }
-   if(Lowerstatus|| HigherStatus)
+       FailureAlert= FailureAlertCheck(Lowerstatus,HigherStatus);
+       int limitBreach=PrintDecision(Lowerstatus,HigherStatus);
+ if(limitBreach)
  {
   print(Language_SET,PARA_SOC, FailureAlert,errorcode_1);
  }
- return (!(Lowerstatus|| HigherStatus));
+  return (!(limitBreach));
 }

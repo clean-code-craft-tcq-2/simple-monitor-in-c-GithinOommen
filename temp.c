@@ -9,17 +9,29 @@ int batteryTempCheck(float temperature)
        {
        HigherStatus=checkHighLimit(temperature,lowlimit,higlimit,&errorcode_1);
        }
- if(Lowerstatus == ALERT|| HigherStatus == ALERT)
- {
-       FailureAlert = 1;
- }
- else
- {
-         FailureAlert=0;
- }
-  if(Lowerstatus|| HigherStatus)
+        FailureAlert= FailureAlertCheck(Lowerstatus,HigherStatus);
+        int limitBreach=PrintDecision(Lowerstatus,HigherStatus);
+// printf("\n alert: %d",limitBreach);
+ if(limitBreach)
  {
   print(Language_SET,PARA_TEMP, FailureAlert,errorcode_1);
  }
- return (!(Lowerstatus|| HigherStatus));
+ return (!(limitBreach));
+}
+int FailureAlertCheck(int Low, int High)
+{
+        if(Low == ALERT|| High == ALERT)
+ {
+       return 1;
+ } 
+ return 0;
+}
+
+int PrintDecision(int lowstatus, int highstatus)
+{
+ if(lowstatus|| highstatus)
+ {
+         return 1;
+ }
+ return 0;
 }
